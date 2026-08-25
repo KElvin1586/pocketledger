@@ -57,9 +57,10 @@ Premium features show a 🔒 PREMIUM badge in navigation, render a gate screen, 
 
 The upgrade action resolves like this:
 
-1. If `VITE_UPGRADE_URL` is configured at build time, the button opens it.
-2. Otherwise, **development builds only** route to `#/checkout` — an internal test-checkout page prominently labelled as a development tool that never processes money.
-3. **Production builds without a configured URL** state plainly that checkout is unavailable instead of pointing at a placeholder domain.
+1. The button opens the real **Lemon Squeezy checkout** (configurable via `VITE_UPGRADE_URL` at build time) in a new tab. Clicking it never unlocks Premium by itself.
+2. After paying, the customer receives a **license key** by email and activates it in **Settings → Activate Premium**. The key is verified against Lemon Squeezy's real license API — no API key or secret is embedded in the bundle (the license endpoints are unauthenticated by design).
+3. Premium persists in localStorage and is **re-validated against Lemon Squeezy on every app start**; revoked/expired licenses are downgraded to Free. A hand-written `{"plan":"premium"}` in localStorage is discarded on load in production builds.
+4. **Development builds only** additionally route to `#/checkout` — an internal test-checkout page prominently labelled as a development tool that never processes money.
 
 Development additionally shows a **Development Test Mode** panel in Settings with *Test as Premium* / *Test as Free* toggles (hidden entirely in production).
 

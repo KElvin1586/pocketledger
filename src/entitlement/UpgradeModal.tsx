@@ -98,8 +98,20 @@ export function UpgradeModal({
           {(UPGRADE_URL || TEST_MODE_ENABLED) && (
             <p className="mt-2 text-center text-xs text-slate-400">
               {UPGRADE_URL
-                ? 'Opens the configured checkout page.'
+                ? 'Opens the secure Lemon Squeezy checkout in a new tab.'
                 : 'Opens the internal test checkout — no payment is processed.'}
+            </p>
+          )}
+          {UPGRADE_URL && (
+            <p className="mt-2 text-center text-xs text-slate-400">
+              Already purchased?{' '}
+              <Link
+                to="/settings"
+                onClick={onClose}
+                className="font-medium text-emerald-700 underline hover:text-emerald-800"
+              >
+                Activate your license key
+              </Link>
             </p>
           )}
         </div>

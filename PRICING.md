@@ -34,9 +34,10 @@ through Vite environment variables (with defaults in `src/config.ts`):
 |---|---|---|
 | `VITE_PREMIUM_PRICE` | `9.99` | Displayed price |
 | `VITE_PREMIUM_CURRENCY` | `USD` | Currency label |
-| `VITE_UPGRADE_URL` | *(empty)* | Checkout URL for the Upgrade modal |
+| `VITE_UPGRADE_URL` | the Lemon Squeezy checkout link | Checkout URL for the Upgrade modal |
 
-If `VITE_UPGRADE_URL` is empty:
+The production checkout is the real Lemon Squeezy link configured in
+`src/config.ts`. If a build overrides `VITE_UPGRADE_URL` with an empty value:
 
 - **Development builds (`npm run dev`)** route the upgrade button to an internal
   `/checkout` page. This page is clearly labelled as a **development test
@@ -45,11 +46,24 @@ If `VITE_UPGRADE_URL` is empty:
 - **Production builds** honestly show that no checkout URL is configured —
   the app never sends users to a placeholder or dummy domain.
 
-## Upgrade flow
+## Upgrade & activation flow
 
 ```
-Free user → 🔒 PREMIUM feature → Upgrade Modal → Upgrade button → checkout
+Free user → 🔒 PREMIUM feature → Upgrade Modal → Upgrade button
+  → Lemon Squeezy checkout (new tab) → pays → receives license key by email
+  → Settings → "Activate Premium" → key verified against Lemon Squeezy's
+    license API (POST /v1/licenses/activate) → Premium unlocks → persists
+    in localStorage → re-validated against Lemon Squeezy on every app start
 ```
+
+The license endpoints (`activate` / `validate` / `deactivate`) are
+unauthenticated by Lemon Squeezy's design — the license key is the
+credential — so no API key or secret is ever embedded in the frontend
+bundle. A hand-written `{"plan":"premium"}` in localStorage is discarded
+on load in production builds: Premium requires a stored license key plus
+instance id. Offline revalidation failures keep the current plan
+(offline-first); server-side rejection (revoked/expired/disabled/unknown
+key) downgrades to Free.
 
 The centralized entitlement lives in `src/entitlement/EntitlementContext.tsx`.
 All premium actions go through `gate(feature)`; nothing is scattered across pages.

@@ -85,8 +85,10 @@ npm run build
    are embedded in the public bundle. Credentials live only on the provider's
    backend.
 
-If `VITE_UPGRADE_URL` is left empty, production honestly tells users that
-checkout is not configured — no placeholder URL, no fake payment screen.
+The production build ships with the real Lemon Squeezy checkout link baked
+in (`src/config.ts`); `VITE_UPGRADE_URL` only overrides it. If it were set to
+an empty value, production would honestly tell users that checkout is not
+configured — no placeholder URL, no fake payment screen.
 Development builds additionally expose a clearly-labelled internal test
 checkout and Free/Premium toggles; neither exists in the production bundle.
 

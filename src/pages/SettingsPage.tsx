@@ -24,6 +24,40 @@ export function SettingsPage() {
   const [newAccountName, setNewAccountName] = useState('');
   const [mergeMode, setMergeMode] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
+  const [licenseKey, setLicenseKey] = useState('');
+  const [activating, setActivating] = useState(false);
+  const [activationMsg, setActivationMsg] = useState<
+    { kind: 'success' | 'error'; text: string } | null
+  >(null);
+
+  async function handleActivate() {
+    const key = licenseKey.trim();
+    if (!key) {
+      setActivationMsg({ kind: 'error', text: 'Enter your license key first.' });
+      return;
+    }
+    setActivating(true);
+    setActivationMsg(null);
+    const result = await entitlement.activatePremium(key);
+    setActivating(false);
+    if (result.ok) {
+      setLicenseKey('');
+      setActivationMsg({
+        kind: 'success',
+        text: 'License verified — Premium is now active on this device.',
+      });
+    } else {
+      setActivationMsg({ kind: 'error', text: result.message });
+    }
+  }
+
+  async function handleDeactivate() {
+    await entitlement.deactivatePremium();
+    setActivationMsg({
+      kind: 'success',
+      text: 'License deactivated on this device. You are back on the Free plan.',
+    });
+  }
 
   const currency = settings?.currency ?? 'USD';
 
@@ -137,7 +171,9 @@ export function SettingsPage() {
         </h2>
         <p className="mt-1 text-sm text-slate-600">
           Current plan: <strong>{entitlement.plan}</strong>
-          {entitlement.isPremium ? ' — everything is unlocked.' : ' — free limits apply.'}
+          {entitlement.isPremium
+            ? ` — everything is unlocked${entitlement.licenseKeyHint ? ` (license …${entitlement.licenseKeyHint})` : ''}.`
+            : ' — free limits apply.'}
         </p>
         <div className="mt-3 flex flex-wrap gap-3">
           <Link
@@ -147,9 +183,72 @@ export function SettingsPage() {
             View plans &amp; pricing
           </Link>
         </div>
+
+        {entitlement.isPremium ? (
+          <div className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4">
+            <p className="text-sm text-emerald-900">
+              Premium is active on this device
+              {entitlement.licenseKeyHint && (
+                <> — license key ending in <strong>…{entitlement.licenseKeyHint}</strong></>
+              )}
+              .
+            </p>
+            {entitlement.licenseKeyHint && (
+              <button
+                type="button"
+                onClick={() => void handleDeactivate()}
+                className="mt-2 rounded-lg border border-emerald-600 px-3 py-1.5 text-xs font-medium text-emerald-700 hover:bg-emerald-100"
+              >
+                Deactivate license on this device
+              </button>
+            )}
+          </div>
+        ) : (
+          <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
+            <h3 className="text-sm font-semibold text-slate-800">
+              Activate Premium with a license key
+            </h3>
+            <p className="mt-1 text-xs text-slate-500">
+              After purchasing, Lemon Squeezy emails you a license key. Paste it
+              here — it is verified directly with Lemon Squeezy&apos;s license
+              server.
+            </p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <input
+                type="text"
+                value={licenseKey}
+                onChange={(e) => setLicenseKey(e.target.value)}
+                placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+                autoComplete="off"
+                spellCheck={false}
+                aria-label="License key"
+                className="min-w-0 flex-1 rounded-lg border border-slate-300 px-3 py-2 font-mono text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              />
+              <button
+                type="button"
+                disabled={activating}
+                onClick={() => void handleActivate()}
+                className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-50"
+              >
+                {activating ? 'Verifying…' : 'Activate Premium'}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {activationMsg && (
+          <p
+            role={activationMsg.kind === 'error' ? 'alert' : 'status'}
+            className={`mt-3 text-sm ${activationMsg.kind === 'error' ? 'text-red-600' : 'text-emerald-700'}`}
+          >
+            {activationMsg.text}
+          </p>
+        )}
+
         <p className="mt-3 text-xs text-slate-400">
-          Premium status is stored locally in this browser — there is no license server,
-          no tracking, no network calls. The Upgrade button links to the configured checkout URL.
+          Your financial data never leaves this browser. Only license
+          activation contacts Lemon Squeezy&apos;s license server — to verify
+          your key; no financial data is ever sent.
         </p>
 
         {TEST_MODE_ENABLED && (

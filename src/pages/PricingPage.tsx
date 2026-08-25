@@ -110,10 +110,10 @@ export function PricingPage() {
       </section>
 
       <footer className="rounded-2xl bg-slate-100 p-4 text-center text-xs text-slate-500">
-        All your financial data stays in this browser. Upgrading flips a local
-        entitlement flag — no account, no telemetry. A payment provider can be
-        attached via the VITE_UPGRADE_URL build setting; until then, checkout is
-        honestly reported as unavailable rather than pointing anywhere fake.
+        All your financial data stays in this browser — no account, no
+        telemetry. Payment is handled by Lemon Squeezy; after purchase you
+        receive a license key by email and activate it in Settings. Only the
+        license check ever leaves your browser — never your financial data.
       </footer>
     </div>
   );

@@ -2,6 +2,21 @@
 
 All notable changes to this project are documented here.
 
+## [Unreleased]
+
+### Added
+
+- Real Lemon Squeezy checkout wired as the production upgrade URL
+- License-key activation flow: Settings → "Activate Premium" verifies keys
+  against Lemon Squeezy's real license API (activate/validate/deactivate —
+  unauthenticated endpoints by design, so no secret in the bundle)
+- Premium re-validation on every app start; revoked/expired/disabled licenses
+  downgrade to Free, offline failures keep the current plan
+- localStorage tamper protection: a bare `{"plan":"premium"}` without a
+  license key is discarded on load in production builds
+- Clear error states for unknown, expired, disabled, and seat-limited licenses
+- "Already purchased? Activate your license key" link in the upgrade modal
+
 ## [1.0.0] — 2026-08-25
 
 ### Added
