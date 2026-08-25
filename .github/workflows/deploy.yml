@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [pocketledger]
+    branches: [main, pocketledger]
   workflow_dispatch:
 
 permissions:
