@@ -11,9 +11,9 @@ export const APP_NAME = 'PocketLedger';
 export const APP_VERSION = '1.0.0';
 
 export const PREMIUM_PRICE =
-  (import.meta.env.VITE_PREMIUM_PRICE as string | undefined) ?? '9.99';
+  (import.meta.env.VITE_PREMIUM_PRICE as string | undefined) ?? '1299';
 export const PREMIUM_CURRENCY =
-  (import.meta.env.VITE_PREMIUM_CURRENCY as string | undefined) ?? 'USD';
+  (import.meta.env.VITE_PREMIUM_CURRENCY as string | undefined) ?? 'KES';
 
 const LEMONSQUEEZY_CHECKOUT_URL =
   'https://kelvindigitaltools.lemonsqueezy.com/checkout/buy/5a9a0680-dbb4-4c1b-b38c-02c8bbd20fe1';
@@ -29,8 +29,17 @@ export const UPGRADE_URL: string =
  */
 export const TEST_MODE_ENABLED: boolean = !import.meta.env.PROD;
 
-/** Human-readable price label, e.g. "$9.99 USD". */
-export const PREMIUM_PRICE_LABEL = `$${PREMIUM_PRICE} ${PREMIUM_CURRENCY}`;
+/**
+ * Human-readable price label. When the checkout currency is KES (or any
+ * non-USD currency), show the amount with its real currency and an
+ * approximate USD equivalent instead of a misleading "$1299".
+ */
+export const PREMIUM_PRICE_LABEL =
+  PREMIUM_CURRENCY === 'KES'
+    ? `KES ${PREMIUM_PRICE} (≈ $10 USD)`
+    : PREMIUM_CURRENCY === 'USD'
+      ? `$${PREMIUM_PRICE} USD`
+      : `${PREMIUM_PRICE} ${PREMIUM_CURRENCY}`;
 
 /** Free-plan limits. */
 export const FREE_TRANSACTION_LIMIT = 150;

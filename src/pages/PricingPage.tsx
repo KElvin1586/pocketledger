@@ -58,7 +58,16 @@ export function PricingPage() {
             </span>
           </div>
           <p className="mt-1 text-2xl font-bold text-slate-900">
-            {PREMIUM_PRICE} {PREMIUM_CURRENCY}{' '}
+            {PREMIUM_CURRENCY === 'KES' ? (
+              <>
+                KES {PREMIUM_PRICE}{' '}
+                <span className="text-base font-medium text-slate-500">≈ $10 USD</span>{' '}
+              </>
+            ) : PREMIUM_CURRENCY === 'USD' ? (
+              <>${PREMIUM_PRICE} USD </>
+            ) : (
+              <>{PREMIUM_PRICE} {PREMIUM_CURRENCY} </>
+            )}
             <span className="text-sm font-normal text-slate-500">one-time</span>
           </p>
           <p className="mt-2 text-sm text-slate-600">

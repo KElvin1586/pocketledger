@@ -65,8 +65,8 @@ Use env vars to adjust pricing/URL before building. Copy `.env.example` to
 
 ```bash
 VITE_UPGRADE_URL="<the checkout link from your payment provider>" \
-VITE_PREMIUM_PRICE=9.99 \
-VITE_PREMIUM_CURRENCY=USD \
+VITE_PREMIUM_PRICE=1299 \
+VITE_PREMIUM_CURRENCY=KES \
 npm run build
 ```
 

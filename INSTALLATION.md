@@ -52,8 +52,8 @@ variables (see `PRICING.md` for the full schema):
 ```
 # .env
 VITE_UPGRADE_URL=
-VITE_PREMIUM_PRICE=9.99
-VITE_PREMIUM_CURRENCY=USD
+VITE_PREMIUM_PRICE=1299
+VITE_PREMIUM_CURRENCY=KES
 ```
 
 Behavior:

@@ -12,7 +12,7 @@ A production-ready, offline-first personal income & expense tracker. All data li
 - **Multiple accounts/wallets** (Premium) — track Cash, Bank, etc.
 - **Reports** (Premium): balance trend, top categories, monthly summaries
 - **Export/Import**: full JSON backup/restore with referential-integrity validation + CSV export
-- **Freemium model**: centralized entitlement system with a Free plan (up to 150 transactions, 12 categories) and Premium unlock (configurable one-time price, default $9.99)
+- **Freemium model**: centralized entitlement system with a Free plan (up to 150 transactions, 12 categories) and Premium unlock (one-time price of KES 1299 (~ $10 USD), configurable via VITE_PREMIUM_PRICE / VITE_PREMIUM_CURRENCY)
 - **Pricing page** with professional Free/Premium comparison and upgrade CTA
 - **No fake payments**: the built-in `Upgrade` action links to the configurable checkout URL; development builds also expose a clearly-labelled **development test checkout** page and **dev-only free/premium toggles** on Settings
 - **Privacy**: financial data never leaves the browser; the only outbound request is the configurable upgrade URL
@@ -83,7 +83,7 @@ Development additionally shows a **Development Test Mode** panel in Settings wit
 
 ## Pricing
 
-Free: **$0** (limited transactions and categories). Premium: **$9.99 one-time**
+Free: **$0** (limited transactions and categories). Premium: **KES 1299 one-time (~ $10 USD)**
 (configurable via `VITE_PREMIUM_PRICE` / `VITE_PREMIUM_CURRENCY` /
 `VITE_UPGRADE_URL`). See [PRICING.md](./PRICING.md) for the full comparison and
 integration notes.

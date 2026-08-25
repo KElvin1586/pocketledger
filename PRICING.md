@@ -32,8 +32,8 @@ through Vite environment variables (with defaults in `src/config.ts`):
 
 | Variable | Default | Purpose |
 |---|---|---|
-| `VITE_PREMIUM_PRICE` | `9.99` | Displayed price |
-| `VITE_PREMIUM_CURRENCY` | `USD` | Currency label |
+| `VITE_PREMIUM_PRICE` | `1299` | Displayed price |
+| `VITE_PREMIUM_CURRENCY` | `KES` | Currency label |
 | `VITE_UPGRADE_URL` | the Lemon Squeezy checkout link | Checkout URL for the Upgrade modal |
 
 The production checkout is the real Lemon Squeezy link configured in
